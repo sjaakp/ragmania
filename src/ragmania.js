@@ -57,8 +57,6 @@ function Ragmania() {
 }
 
 Ragmania.prototype = {
-    tiks: [ '.', '..', '...', '....', '.....', '....', '...', '..', '.', '' ],
-
     maakMachine()   {
         const worker = new Worker(new URL('machine.js', import.meta.url), { type: 'module' });
         worker.addEventListener('message', e => {
@@ -73,12 +71,9 @@ Ragmania.prototype = {
                     this.zetZoekend(false);
                     break;
                 case 'tik':
-                    // console.log('tik', e.data.nr);
                     let m = (e.data.nr / 40) % 40;
                     if (m > 20) m = 40 - m;
                     this.tik.value = m;
-                    // this.tik.setAttribute('high', m + 1);
-                    // this.tik.textContent = this.tiks[m];
                     break;
             }
         });
