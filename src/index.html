@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ragmania</title>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <h1>Ragmania</h1>
+    <h2>Snelle anagrammenzoeker</h2>
+    <div class="ragmania" id="rag-container">
+      <label for="rag-opgave">Opgave</label>
+      <input id="rag-opgave" type="text">
+      <div id="rag-opties">
+        <label for="rag-minkar">Woordlengte minimaal</label>
+        <input id="rag-minkar" type="number" min="1" max="6" value="3">
+        <label for="rag-maxwoord">&nbsp;Woorden maximaal</label>
+        <input id="rag-maxwoord" type="number" min="1" max="12" value="3">
+      </div>
+      <div id="rag-knoppen">
+        <button id="rag-start" type="button">Start</button>
+        <button id="rag-stop" type="button">Stop</button>
+        <progress id="rag-tik" max="20" value="0"></progress>
+      </div>
+      <div id="rag-result"></div>
+      <p id="rag-bericht">&nbsp;</p>
+    </div>
+    <p><a href="lexigraaf.html">Maak lexicon</a></p>
+  </body>
+
+<!--  <script src="lexicon.js"></script>-->
+  <script type="module" src="ragmania.js"></script>
+</html>

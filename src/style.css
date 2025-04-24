@@ -1,0 +1,66 @@
+html {
+  color-scheme: light dark;
+  font-family: system-ui;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+label {
+  font-weight: bold;
+}
+
+.ragmania {
+  label {
+    display: block;
+  }
+  &.zoekend #rag-result {
+    border-color: blue;
+  }
+}
+
+#rag-opgave {
+  margin-top: .3em;
+  font-size: 120%;
+}
+
+#rag-opties {
+  display: block;
+  margin-top: 1em;
+  font-size: 80%;
+  label {
+    display: inline-block;
+    font-weight: normal;
+  }
+}
+
+#rag-knoppen {
+  display: flex;
+  align-items: center;
+  margin-top: 1em;
+  gap: 1em;
+}
+
+#rag-start {
+  font-size: 120%;
+  font-weight: bold;
+}
+
+#rag-tik {
+  max-width: 8em;
+  margin-left: auto;
+  font-weight: bold;
+  letter-spacing: .2rem;
+}
+
+#rag-result {
+  margin-top: 1em;
+  padding-inline: .5em;
+  height: 20em;
+  overflow-y: auto;
+  border: 2px solid lightgrey;
+  p {
+    margin-block: 0;
+  }
+}
