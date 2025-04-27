@@ -26,9 +26,9 @@
       <div id="rag-result"></div>
       <p id="rag-bericht">&nbsp;</p>
     </div>
-    <p><a href="lexigraaf.html">Maak lexicon</a></p>
   </body>
-
-<!--  <script src="lexicon.js"></script>-->
-  <script type="module" src="ragmania.js"></script>
+  <script type="module">
+    import Ragmania from "./ragmania.js";
+    new Ragmania("nl1.txt");
+  </script>
 </html>

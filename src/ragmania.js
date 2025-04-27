@@ -3,7 +3,7 @@
  * ---------------
  *
  * Snelle anagrammenzoeker op basis van een idee van Hugo Brandt Corstius
- * Versie 2.0.0
+ * Versie 2.1.0
  * Copyright (c) 2025
  * Sjaak Priester, Amsterdam
  * MIT License
@@ -11,7 +11,7 @@
  * https://sjaakpriester.nl
  */
 
-function Ragmania() {
+export default function Ragmania(lexUrl) {
     if (!window.Worker) {
         console.error('Ragmania: deze browser ondersteunt geen Worker-threads.');
         return;
@@ -20,6 +20,7 @@ function Ragmania() {
         console.error('Ragmania: deze browser ondersteunt geen BigInt.');
         return;
     }
+    this.lexUrl = lexUrl;
 
     this.container = document.getElementById('rag-container');
     this.opgave = document.getElementById('rag-opgave');
@@ -38,10 +39,16 @@ function Ragmania() {
     });
 
     this.stop.addEventListener('click', e => {
-        this.worker.terminate();
+/*
+        this.worker.postMessage({   // dit werkt nog niet
+            commando: 'stop',
+        });
+*/
+        this.worker.terminate();        // paardenmiddel: kill de worker...
         this.meldStop('Afgebroken');
         this.zetZoekend(false);
-        this.worker = this.maakMachine();
+        this.start.disabled = true;
+        this.worker = this.maakMachine(this.lexUrl);    // ... en herbouw de worker
     });
 
     this.opgave.addEventListener('keyup', e => {
@@ -51,17 +58,25 @@ function Ragmania() {
         }
     });
 
-    this.worker = this.maakMachine();
     this.zetZoekend(false);
+    this.start.disabled = true;
+    this.worker = this.maakMachine(lexUrl);
     // console.log(this);
 }
 
 Ragmania.prototype = {
-    maakMachine()   {
-        const worker = new Worker(new URL('machine.js', import.meta.url), { type: 'module' });
+    maakMachine(lexUrl)   {    // maak de worker
+        const url = new URL('machine.js', import.meta.url);
+        url.searchParams.set('lexicon', lexUrl)
+
+        const worker = new Worker(url, { type: 'module' });
         worker.addEventListener('message', e => {
             switch (e.data.commando)    {
-                case 'vondst':
+                case 'paraat':
+                    this.start.disabled = false;
+                    console.log(`Lexicon geladen, bron: ${e.data.url}, ${e.data.woorden} woorden.`)
+                    break;
+                case 'vondst':      // anagram gevonden, verhoog teller en vertoon
                     this.teller++;
                     this.result.innerHTML += `<p>${e.data.tekst}</p>`;
                     this.bericht.textContent = this.teller;
@@ -70,7 +85,7 @@ Ragmania.prototype = {
                     this.meldStop('Gereed');
                     this.zetZoekend(false);
                     break;
-                case 'tik':
+                case 'tik':     // laat zien dat zoekproces nog gaande is
                     let m = (e.data.nr / 40) % 40;
                     if (m > 20) m = 40 - m;
                     this.tik.value = m;
@@ -113,5 +128,3 @@ Ragmania.prototype = {
         this.bericht.textContent = `${reden}. ${this.teller} anagrammen gevonden in ${((performance.now() - this.tStart).toFixed(2))} ms.`;
     }
 };
-
-new Ragmania();
